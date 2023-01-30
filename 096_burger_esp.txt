@@ -15,3 +15,12 @@ ESP:AddObjectListener(Workspace.Interact, { -- Object Path, For example: Workspa
     IsEnabled = "Burger" -- Any name, has to be the same as the last line: ESP.TheNameYouWant
 })
 ESP.Burger = true
+
+-- object
+ESP:AddObjectListener(Workspace.Interact, { -- Object Path, For example: Workspace.ThisFolder
+    Name = "Keycard-D", --Object name inside of the path, for example: Workspace.ThisFolder.Item_1
+    CustomName = "keycard D", -- Name you want to be displayed
+    Color = Color3.fromRGB(24, 222, 77), -- Color
+    IsEnabled = "KeycardD" -- Any name, has to be the same as the last line: ESP.TheNameYouWant
+})
+ESP.KeycardD = true
