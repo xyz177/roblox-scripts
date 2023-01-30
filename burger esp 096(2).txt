@@ -1,0 +1,17 @@
+-- loadstring
+local ESP = loadstring(game:HttpGet("https://kiriot22.com/releases/ESP.lua"))()
+ 
+-- config
+ESP.Players = false
+ESP.Boxes = true
+ESP.Names = true
+ESP:Toggle(false)
+ 
+-- object
+ESP:AddObjectListener(Workspace.Interact, { -- Object Path, For example: Workspace.ThisFolder
+    Name = "Burger", --Object name inside of the path, for example: Workspace.ThisFolder.Item_1
+    CustomName = "burger", -- Name you want to be displayed
+    Color = Color3.fromRGB(10, 116, 245), -- Color
+    IsEnabled = "Burger" -- Any name, has to be the same as the last line: ESP.TheNameYouWant
+})
+ESP.Burger = true
