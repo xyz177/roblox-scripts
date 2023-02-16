@@ -5,6 +5,7 @@ local Window = Library.CreateLib("bing chilling | UNOFFICIAL", "GrapeTheme")
 
 local MainTab = Window:NewTab("Main")
 local MainTab1 = MainTab:NewSection("MainScripts")
+Section:NewKeybind("KeybindText", "KeybindInfo", Enum.KeyCode.F, function()
 
 --Buttons
 
