@@ -1,4 +1,4 @@
-elseif game.PlaceId ~= 0 then
+
 local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
 
 local Window = Rayfield:CreateWindow({
