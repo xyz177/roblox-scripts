@@ -1,0 +1,154 @@
+--[[ 
+    CLIENT-SIDE EXPLOIT MONITOR WITH BOX HIGHLIGHT
+    
+    Monitors player movement, uses native Roblox notifications, AND 
+    highlights suspected players with a client-only BoxHandleAdornment.
+--]]
+
+local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+
+-- == CONFIGURATION ==
+local CHECK_INTERVAL = 0.05       -- How often (in seconds) to check player positions
+local MAX_TELEPORT_DISTANCE = 5   -- Max distance (in studs) a player can move legitimately in one interval
+local MAX_AIR_TIME = 1.5          -- Max time (in seconds) a player can be airborne and moving
+local NOTIFICATION_DURATION = 5   -- How long the notification stays on screen
+local BOX_COLOR = Color3.fromRGB(255, 0, 0) -- Bright Red for the box outline
+local BOX_TRANSPARENCY = 0.5      -- Transparency of the box fill
+local BOX_DURATION = 3            -- How long the box highlight stays active
+
+-- == PRIVATE STORAGE ==
+local PlayerData = {}
+local ActiveBoxes = {} -- Tracks active BoxHandleAdornments
+
+-- == UTILITY FUNCTIONS ==
+
+local function send_exploit_notification(playerName, exploitType)
+    StarterGui:SetCore("SendNotification", {
+        Title = "🚨 Exploit Detected!",
+        Text = string.format("%s is suspected of %s!", playerName, exploitType),
+        Duration = NOTIFICATION_DURATION,
+        Icon = "rbxassetid://6034176465", -- Danger sign icon
+    })
+end
+
+local function apply_box_highlight(player, reason)
+    local character = player.Character
+    if not character or not character.PrimaryPart then return end
+
+    -- Only create a new box if one doesn't exist for this player or if it's already expired
+    if ActiveBoxes[player.Name] and ActiveBoxes[player.Name].Box and ActiveBoxes[player.Name].ExpirationTime > tick() then 
+        return -- Box already active and not expired
+    end
+
+    -- Destroy existing box if it somehow lingers (safety check)
+    if ActiveBoxes[player.Name] and ActiveBoxes[player.Name].Box then
+        ActiveBoxes[player.Name].Box:Destroy()
+    end
+
+    local rootPart = character.PrimaryPart 
+
+    -- Create and configure the BoxHandleAdornment
+    local box = Instance.new("BoxHandleAdornment")
+    box.Adornee = rootPart
+    box.Color3 = BOX_COLOR
+    box.AlwaysOnTop = true
+    box.ZIndex = 10 -- Ensure it renders on top
+    box.Transparency = BOX_TRANSPARENCY
+    box.Size = rootPart.Size * 1.2 -- Slightly larger than the part
+    box.Parent = Players.LocalPlayer.PlayerGui -- Parented to PlayerGui for client-side visibility
+
+    -- Store the box and its expiration time
+    ActiveBoxes[player.Name] = {
+        Box = box,
+        ExpirationTime = tick() + BOX_DURATION
+    }
+
+    -- Send notification only the first time the box is applied (or reapplied after expiry)
+    send_exploit_notification(player.Name, reason)
+
+    -- Auto-destroy the box after its duration
+    task.delay(BOX_DURATION, function()
+        if ActiveBoxes[player.Name] and ActiveBoxes[player.Name].Box == box then
+            box:Destroy()
+            ActiveBoxes[player.Name] = nil -- Clear data
+        end
+    end)
+    
+    -- Clean up if character changes
+    player.CharacterRemoving:Connect(function(removedChar)
+        if removedChar == character and ActiveBoxes[player.Name] and ActiveBoxes[player.Name].Box == box then
+            box:Destroy()
+            ActiveBoxes[player.Name] = nil
+        end
+    end)
+end
+
+local function monitor_player(player)
+    if player == LocalPlayer or PlayerData[player] then return end
+
+    PlayerData[player] = { LastPosition = Vector3.new(0, 0, 0), AirTime = 0 }
+
+    local function setup_character_monitoring(character)
+        local root = character:WaitForChild("HumanoidRootPart", 10)
+        local humanoid = character:WaitForChild("Humanoid", 10)
+        
+        if not root or not humanoid then return end -- Guard against missing parts
+        
+        PlayerData[player].LastPosition = root.Position
+        PlayerData[player].AirTime = 0
+
+        local connection
+        connection = RunService.Stepped:Connect(function(_, step)
+            if not root or not humanoid or humanoid.Health <= 0 or not character.Parent then 
+                connection:Disconnect() 
+                return 
+            end
+            
+            local currentPos = root.Position
+            local lastPos = PlayerData[player].LastPosition
+            
+            local distance = (currentPos - lastPos).Magnitude
+            
+            -- ** TELEPORT/SPEED HACK DETECTION **
+            if distance > MAX_TELEPORT_DISTANCE then
+                apply_box_highlight(player, "Teleporting/Speed Hacking")
+            end
+            
+            -- ** FLYING/AIRWALKING DETECTION **
+            if humanoid.FloorMaterial == Enum.Material.Air and humanoid.MoveDirection.Magnitude > 0 then
+                PlayerData[player].AirTime = PlayerData[player].AirTime + step 
+                if PlayerData[player].AirTime > MAX_AIR_TIME then
+                    apply_box_highlight(player, "Flying/Airwalking")
+                end
+            else
+                PlayerData[player].AirTime = 0
+            end
+            
+            PlayerData[player].LastPosition = currentPos
+        end)
+    end
+    
+    player.CharacterAdded:Connect(setup_character_monitoring)
+    if player.Character then setup_character_monitoring(player.Character) end
+    
+    -- Clean up data when player leaves
+    player.AncestryChanged:Connect(function(_, parent)
+        if not parent and player.Parent ~= Players then
+            PlayerData[player] = nil
+            if ActiveBoxes[player.Name] and ActiveBoxes[player.Name].Box then
+                ActiveBoxes[player.Name].Box:Destroy()
+                ActiveBoxes[player.Name] = nil
+            end
+        end
+    end)
+end
+
+-- == MAIN EXECUTION ==
+
+for _, player in Players:GetPlayers() do
+    monitor_player(player)
+end
+Players.PlayerAdded:Connect(monitor_player)

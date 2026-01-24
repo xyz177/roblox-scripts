@@ -1,0 +1,171 @@
+--[[ 
+    CLIENT-SIDE EXPLOIT MONITOR WITH VISUAL HIGHLIGHT
+    
+    This script monitors movement, uses the native Roblox notification system,
+    AND visually highlights the detected player with a client-only, full-body effect.
+    
+    -- MODIFIED BY GEMINI: Highlight now targets the entire player avatar, not just the head.
+--]]
+
+local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+
+-- == CONFIGURATION ==
+local CHECK_INTERVAL = 0.05       -- How often (in seconds) to check player positions
+local MAX_TELEPORT_DISTANCE = 5   -- Max distance (in studs) a player can move legitimately in one interval
+local MAX_AIR_TIME = 1.5          -- Max time (in seconds) a player can be airborne and moving
+local NOTIFICATION_DURATION = 5   -- How long the notification stays on screen
+local HIGHLIGHT_COLOR = Color3.fromRGB(255, 0, 0) -- Bright Red for the highlight
+local HIGHLIGHT_DURATION = 3      -- How long the visual highlight stays active
+
+-- == PRIVATE STORAGE ==
+local PlayerData = {}
+local HighlightData = {} -- Tracks active highlights to prevent duplicates
+
+-- == UTILITY FUNCTIONS ==
+
+local function send_exploit_notification(playerName, exploitType)
+    StarterGui:SetCore("SendNotification", {
+        Title = "🚨 Exploit Detected!",
+        Text = string.format("%s is suspected of %s!", playerName, exploitType),
+        Duration = NOTIFICATION_DURATION,
+        Icon = "rbxassetid://4600290685" -- Example icon, replace with your preferred asset ID
+    })
+end
+
+-- New function to clean up the full-body highlight
+local function remove_highlight(player)
+    local char = player.Character
+    if char then
+        -- Iterate over all parts of the character to find and remove the highlight
+        for _, part in ipairs(char:GetDescendants()) do
+            if part:IsA("BasePart") then
+                local highlight = part:FindFirstChild("FullBodyHighlight")
+                if highlight then
+                    highlight:Destroy()
+                end
+            end
+        end
+    end
+    -- Remove the tracking flag once cleanup is complete
+    HighlightData[player.Name] = nil 
+end
+
+-- MODIFIED: This now applies the highlight to every single part of the avatar
+local function highlight_player(player, exploitType)
+    local char = player.Character
+    -- Check for character and if a highlight is already active to prevent spam
+    if not char or HighlightData[player.Name] then return end 
+
+    -- 1. Send the notification first
+    send_exploit_notification(player.Name, exploitType)
+
+    -- 2. Set the tracking flag and schedule cleanup
+    HighlightData[player.Name] = true
+    
+    -- Schedule cleanup after the duration using the new function
+    task.delay(HIGHLIGHT_DURATION, function()
+        remove_highlight(player)
+    end)
+
+    -- 3. APPLY HIGHLIGHT TO ALL PARTS (The Core Modification)
+    for _, part in ipairs(char:GetDescendants()) do
+        if part:IsA("BasePart") and not part:FindFirstChild("FullBodyHighlight") then
+            local highlight = Instance.new("Highlight")
+            highlight.Name = "FullBodyHighlight" -- Unique name for easy removal
+            highlight.FillColor = HIGHLIGHT_COLOR
+            highlight.OutlineColor = Color3.new(1, 1, 1) -- White outline for visibility
+            highlight.Enabled = true
+            
+            highlight.Parent = part -- Parent it to the part (Torso, Arm, Leg, etc.)
+        end
+    end
+end
+
+
+-- == PLAYER MONITORING LOGIC ==
+
+local function setup_character_monitoring(character)
+    local player = Players:GetPlayerFromCharacter(character)
+    if not player then return end
+
+    local root = character:WaitForChild("HumanoidRootPart", 5)
+    local humanoid = character:WaitForChild("Humanoid", 5)
+
+    if not root or not humanoid then return end
+
+    -- Initialize or reset data for this player
+    PlayerData[player] = {
+        LastPosition = root.Position,
+        AirTime = 0,
+        Connection = nil
+    }
+
+    -- Create a connection to monitor movement on the client RunService.Stepped
+    PlayerData[player].Connection = RunService.Stepped:Connect(function(step)
+        if not character or not character.Parent or humanoid.Health <= 0 then
+            -- Cleanup if the character is gone or dead
+            if PlayerData[player] and PlayerData[player].Connection then
+                PlayerData[player].Connection:Disconnect()
+                PlayerData[player] = nil
+            end
+            return
+        end
+        
+        -- Only check every interval
+        if os.clock() % CHECK_INTERVAL > step then return end
+
+        local currentPos = root.Position
+        local lastPos = PlayerData[player].LastPosition
+        
+        local distance = (currentPos - lastPos).Magnitude
+        
+        -- ** TELEPORT/SPEED HACK DETECTION **
+        if distance > MAX_TELEPORT_DISTANCE then
+            highlight_player(player, "Teleporting/Speed Hacking")
+        end
+        
+        -- ** FLYING/AIRWALKING DETECTION **
+        -- Checks if the player is airborne AND moving
+        if humanoid.FloorMaterial == Enum.Material.Air and humanoid.MoveDirection.Magnitude > 0 then
+            PlayerData[player].AirTime = PlayerData[player].AirTime + step 
+            if PlayerData[player].AirTime > MAX_AIR_TIME then
+                highlight_player(player, "Flying/Airwalking")
+            end
+        else
+            PlayerData[player].AirTime = 0
+        end
+        
+        PlayerData[player].LastPosition = currentPos
+    end)
+end
+
+local function monitor_player(player)
+    -- Disconnect old connection if one exists before setting up new one
+    if PlayerData[player] and PlayerData[player].Connection then
+        PlayerData[player].Connection:Disconnect()
+    end
+    
+    -- Connections for player life cycle
+    player.CharacterAdded:Connect(setup_character_monitoring)
+    if player.Character then setup_character_monitoring(player.Character) end
+    
+    player.AncestryChanged:Connect(function(_, parent)
+        if not parent and player.Parent ~= Players then
+            -- Full cleanup when player leaves the game
+            remove_highlight(player)
+            PlayerData[player] = nil
+        end
+    end)
+end
+
+-- == MAIN EXECUTION ==
+
+-- Monitor all players already in the game
+for _, player in Players:GetPlayers() do
+    monitor_player(player)
+end
+-- Monitor any players who join after execution
+Players.PlayerAdded:Connect(monitor_player)

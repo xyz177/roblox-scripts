@@ -1,0 +1,110 @@
+--[[ 
+    CLIENT-SIDE EXPLOIT MONITOR
+    
+    This script monitors all other players on the client to detect sudden,
+    physics-defying movements (Teleporting/Flying) and uses the native 
+    Roblox notification system to alert the local user.
+--]]
+
+local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+
+-- == CONFIGURATION ==
+local CHECK_INTERVAL = 0.05       -- How often (in seconds) to check player positions
+local MAX_TELEPORT_DISTANCE = 5   -- Max distance (in studs) a player can move legitimately in one interval
+local MAX_AIR_TIME = 1.5          -- Max time (in seconds) a player can be airborne and moving
+local NOTIFICATION_DURATION = 5   -- How long the notification stays on screen
+
+-- == PRIVATE STORAGE ==
+local PlayerData = {}
+
+-- == UTILITY FUNCTIONS ==
+
+local function send_exploit_notification(playerName, exploitType)
+    -- Uses the built-in Roblox CoreGui notification system.
+    StarterGui:SetCore("SendNotification", {
+        Title = "🚨 Exploit Detected!",
+        Text = string.format("%s is suspected of %s!", playerName, exploitType),
+        Duration = NOTIFICATION_DURATION,
+        -- You can customize the icon here for a professional look:
+        Icon = "rbxassetid://6034176465", -- Example: A danger/warning sign
+    })
+end
+
+local function monitor_player(player)
+    -- Skip monitoring the local player or if already monitoring
+    if player == LocalPlayer or PlayerData[player] then return end
+
+    -- Initialize tracking data
+    PlayerData[player] = { 
+        LastPosition = Vector3.new(0, 0, 0), 
+        AirTime = 0 
+    }
+
+    local function setup_character_monitoring(character)
+        local root = character:WaitForChild("HumanoidRootPart")
+        local humanoid = character:WaitForChild("Humanoid")
+        
+        -- Set initial position
+        PlayerData[player].LastPosition = root.Position
+        PlayerData[player].AirTime = 0
+
+        -- Use a fast running loop to check movement
+        local connection
+        connection = RunService.Stepped:Connect(function()
+            if not root or not humanoid or humanoid.Health <= 0 then 
+                connection:Disconnect() -- Character died or was destroyed, stop monitoring
+                return 
+            end
+            
+            local currentPos = root.Position
+            local lastPos = PlayerData[player].LastPosition
+            
+            -- ** TELEPORT/SPEED HACK DETECTION **
+            local distance = (currentPos - lastPos).Magnitude
+            if distance > MAX_TELEPORT_DISTANCE then
+                send_exploit_notification(player.Name, "Teleporting/Speed Hacking")
+            end
+            
+            -- ** FLYING/AIRWALKING DETECTION **
+            if humanoid.FloorMaterial == Enum.Material.Air and humanoid.MoveDirection.Magnitude > 0 then
+                PlayerData[player].AirTime = PlayerData[player].AirTime + RunService.Heartbeat:Wait() -- Use Heartbeat for true time
+                if PlayerData[player].AirTime > MAX_AIR_TIME then
+                    send_exploit_notification(player.Name, "Flying/Airwalking")
+                end
+            else
+                PlayerData[player].AirTime = 0 -- Reset air time if they are grounded
+            end
+            
+            -- Update position for the next check
+            PlayerData[player].LastPosition = currentPos
+        end)
+    end
+    
+    -- Connect to character changes (resets, rejoins)
+    player.CharacterAdded:Connect(setup_character_monitoring)
+    
+    -- Check if a character already exists on player join
+    if player.Character then
+        setup_character_monitoring(player.Character)
+    end
+    
+    -- Clean up player data on player removal
+    player.AncestryChanged:Connect(function(_, parent)
+        if not parent and player.Parent ~= Players then
+            PlayerData[player] = nil
+        end
+    end)
+end
+
+-- == MAIN EXECUTION ==
+
+-- Initial monitoring for players already in the game
+for _, player in Players:GetPlayers() do
+    monitor_player(player)
+end
+
+-- Connect the monitoring function to all future players
+Players.PlayerAdded:Connect(monitor_player)
