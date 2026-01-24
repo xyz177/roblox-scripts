@@ -1,0 +1,2 @@
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Aurora-2004/Aurora_Public/refs/heads/main/LumberTycoon2/AutoBuyGifts"))()

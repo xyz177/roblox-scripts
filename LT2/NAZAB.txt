@@ -1,0 +1,31 @@
+-KRON-
+
+loadstring(game:HttpGet('https://raw.githubusercontent.com/DevKron/Kron_Hub/refs/heads/main/version_1.0"))("")
+
+SAFE MODE:
+
+getgenv().Key "N30-LAP3-EVM"
+
+loadstring(game: HttpGet('https://raw.githubusercontent.com/DevKron/Kron_Hub/refs/heads/main/version_1.0"))("")
+
+-BUTTER V6-
+
+getgenv().LDKey = "Nazab"
+
+Get key here https://lootdest.org/s?9zrSXsnH
+
+loadstring(game:HttpGet([[https://raw.githubusercontent.com/kode-sec/Butter/refs/heads/main/--%5B%5B-obfuscated.lua]]))()
+
+-BUTTER V5--
+
+mea getgenv().LDKey "Nazab"
+
+Get key here https://lootdest.org/s?9zrSXsnH
+
+loadstring(game:HttpGet([[https://raw.githubusercontent.com/kode-sec/Butter/refs/heads/main/main.lua]]))()
+
+-ASTRA-
+
+script_key="XVGQwytbwJEuIbmthUcUVdBdfGnEz1Bv";
+
+loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/7707dab6948858bb8746c9def58a83cb.lua"))()
