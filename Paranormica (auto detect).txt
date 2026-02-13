@@ -1,0 +1,198 @@
+-- // CONSTANTS \\ --
+-- [ Services ] --
+local Services = setmetatable({}, {__index = function(Self, Index)
+   local NewService = game:GetService(Index)
+   if NewService then
+       Self[Index] = NewService
+   end
+   return NewService
+end})
+
+-- [ Info ] --
+local Info = {
+   Name = Services.ReplicatedStorage.Ghost.GhostName,
+   Difficulty = Services.ReplicatedStorage.Modifiers.DifficultyModifier,
+   Hunting = Services.ReplicatedStorage.Ghost.Hunting
+}
+
+-- [ Other Info ] --
+-- Maps --
+local PossibleMaps = {"SingleStorey", "Ranch", "Prison", "School", "Abandoned Laboratory"}
+
+-- Ghosts --
+local PossibleGhosts = require(Services.ReplicatedStorage.Ghosts)
+
+-- // Variables \\ --
+-- [ Data ] --
+local Data = {}
+Data.Ghost = "Spirit"
+Data.Confidence = 0
+Data.Evidences = {}
+
+if Info.Name.Value == nil or Info.Name.Value == "" then
+   Info.Name.Changed:Wait(5)
+end
+setclipboard(Info.Name.Value)
+
+-- [ Time Saves ] --
+local TimeSave = {
+   EvidenceCheck = time(),
+   LightingUpdate = time()
+}
+
+-- // FUNCTIONS \\ --
+-- [ Main ] --
+local MainFunctions = {}
+
+-- Create ESP --
+function MainFunctions.ESP(Part, Color)
+   if Part:FindFirstChildOfClass('BoxHandleAdornment') then
+return
+end
+local Box = Instance.new("BoxHandleAdornment")
+Box.Size = Part.Size + Vector3.new(0.1, 0.1, 0.1)
+Box.Name = "Mesh"
+Box.Adornee = Part
+Box.Color3 = Color
+Box.AlwaysOnTop = true
+Box.ZIndex = 5
+Box.Transparency = 0.75
+   Box.Parent = Part
+
+   return Box
+end
+
+-- Temperatures --
+function MainFunctions.CheckTemperatures()
+   for i,v in ipairs(PossibleMaps) do
+       local Map = workspace:FindFirstChild(v)
+       if Map then
+           local RoomsFolder = Map:FindFirstChild("Rooms")
+           for Index, Room in ipairs(RoomsFolder:GetChildren()) do
+               if Room:IsA("Folder") and Room.Name ~= "Outside" and Room:FindFirstChild("Temperature").Value < 7 then
+                   return true
+               end
+           end
+           break
+       end
+   end
+   return false
+end
+
+function MainFunctions.RetrieveEvidence()
+   if table.find(Data.Evidences, "Freezing Temperatures") == nil and MainFunctions.CheckTemperatures() == true then
+       table.insert(Data.Evidences, "Freezing Temperatures")
+   end
+
+   if table.find(Data.Evidences, "Ghost Orb") == nil and workspace:FindFirstChild("GhostOrb") then
+       table.insert(Data.Evidences, "Ghost Orb")
+   end
+
+   for _, Ghost in ipairs(PossibleGhosts) do
+       local IsValid = true
+       local Confidence = 0
+
+       for _, Evidence in ipairs(Data.Evidences) do
+           if table.find(Ghost.evidences, Evidence) == nil then
+               IsValid = false
+           else
+               Confidence = Confidence + 33.3 + (math.random(1, 5)/100)
+           end
+       end
+
+       if IsValid == true then
+           Data.Ghost = Ghost.name
+           Data.Confidence = Confidence
+           break
+       end
+   end
+
+   return Data
+end
+-- [ Event ] --
+local EventFunctions = {}
+
+-- EMF Added --
+function EventFunctions.EMFAdded(Child)
+   if table.find(Data.Evidences, "EMF Level 5") == nil and Child:WaitForChild("Level", 5).Value >= 5 then
+       table.insert(Data.Evidences, "EMF Level 5")
+   end
+end
+
+-- Hunting --
+function EventFunctions.Hunting(Status)
+   Services.StarterGui:SetCore("SendNotification", {
+       Title = "Ghost Hunting",
+       Text = "Status: " .. tostring(Status),
+       Duration = 5
+   })
+end
+
+-- Heartbeat --
+function EventFunctions.Heartbeat(Step)
+   if time() - TimeSave.LightingUpdate > 2.5 then
+       TimeSave.LightingUpdate = time()
+
+       Services.Lighting.Brightness = 2.5
+       Services.Lighting.ClockTime = 14
+       Services.Lighting.FogEnd = 50000
+       Services.Lighting.GlobalShadows = false
+       Services.Lighting.OutdoorAmbient = Color3.fromRGB(125, 125, 125)
+   end
+
+   if time() - TimeSave.EvidenceCheck > 10 then
+       TimeSave.EvidenceCheck = time()
+       MainFunctions.RetrieveEvidence()
+   end
+end
+
+-- // LISTENERS \\ --
+
+-- [ Connections ] --
+-- Heartbeat --
+Services.RunService.Heartbeat:Connect(EventFunctions.Heartbeat)
+
+-- Hunting --
+Info.Hunting.Changed:Connect(EventFunctions.Hunting)
+
+-- EMF --
+Services.ReplicatedStorage.EMF.ChildAdded:Connect(EventFunctions.EMFAdded)
+
+-- [ Binds ] --
+-- Ghost --
+Services.ContextActionService:BindAction("RetrieveGhost", function(actionName, InputState, inputObject)
+   if InputState == Enum.UserInputState.Begin then
+       MainFunctions.RetrieveEvidence()
+       Services.StarterGui:SetCore("SendNotification", {
+           Title = "Ghost: " .. Data.Ghost,
+           Text = "Confidence: " .. tostring(Data.Confidence),
+           Duration = 5
+       })
+   end
+end, false, Enum.KeyCode.C)
+
+-- Evidence --
+Services.ContextActionService:BindAction("RetrieveGhostInfo", function(actionName, InputState, inputObject)
+   if InputState == Enum.UserInputState.Begin then
+       MainFunctions.RetrieveEvidence()
+       Services.StarterGui:SetCore("SendNotification", {
+           Title = "Evidence: ",
+           Text = table.concat(Data.Evidences, ", "),
+           Duration = 5
+       })
+   end
+end, false, Enum.KeyCode.V)
+
+
+-- // ACTIONS \\ --
+for i = 1, 10 do
+   local Ghost = workspace:FindFirstChild("Ghost" .. tostring(i))
+   if Ghost then
+       for i,v in ipairs(Ghost:GetDescendants()) do
+           if v:IsA("BasePart") then
+               MainFunctions.ESP(v, Color3.new(1,0,0))
+           end
+       end
+       break
+   end
+end

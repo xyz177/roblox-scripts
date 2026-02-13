@@ -1,0 +1,554 @@
+-- Instances:
+local VehicleSimultor = Instance.new("ScreenGui")
+local VSV1 = Instance.new("Frame")
+local TItle = Instance.new("TextLabel")
+local TItle_2 = Instance.new("TextLabel")
+local Speed = Instance.new("TextButton")
+local SpeedBind = Instance.new("TextBox")
+local Close = Instance.new("TextButton")
+local NitroSpeed = Instance.new("TextButton")
+local NST = Instance.new("TextBox")
+local NitroForce = Instance.new("TextButton")
+local NFT = Instance.new("TextBox")
+local JumpHeight = Instance.new("TextButton")
+local JHT = Instance.new("TextBox")
+local ScrollingFrame = Instance.new("ScrollingFrame")
+local TptoCrate = Instance.new("TextButton")
+local TeleportLT = Instance.new("TextButton")
+local TeleportToCar = Instance.new("TextButton")
+local CrateESP = Instance.new("TextButton")
+local GiveAllPerks = Instance.new("TextButton")
+local SuperCar = Instance.new("TextButton")
+local InfiniteNitro = Instance.new("TextButton")
+local AutoFarm = Instance.new("TextButton")
+local Torque = Instance.new("TextButton")
+local Torquet = Instance.new("TextBox")
+local SteeringForce = Instance.new("TextButton")
+local SFT = Instance.new("TextBox")
+local Open = Instance.new("TextButton")
+--Properties:
+VehicleSimultor.Name = "VehicleSimultor"
+VehicleSimultor.Parent = game.CoreGui
+
+VSV1.Name = "VSV1"
+VSV1.Parent = VehicleSimultor
+VSV1.BackgroundColor3 = Color3.new(0.282353, 0.282353, 0.282353)
+VSV1.BorderSizePixel = 0
+VSV1.Position = UDim2.new(0.341240883, 0, 0.10428305, 0)
+VSV1.Size = UDim2.new(0, 369, 0, 407)
+VSV1.Active = true
+VSV1.Draggable = true
+
+TItle.Name = "TItle"
+TItle.Parent = VSV1
+TItle.BackgroundColor3 = Color3.new(0.156863, 0.156863, 0.156863)
+TItle.BorderSizePixel = 0
+TItle.Position = UDim2.new(-3.83744082e-05, 0, -0.0101027992, 0)
+TItle.Size = UDim2.new(0, 369, 0, 36)
+TItle.Font = Enum.Font.SourceSansLight
+TItle.Text = "Vehicle Simultor Gui"
+TItle.TextColor3 = Color3.new(1, 1, 1)
+TItle.TextSize = 25
+
+TItle_2.Name = "TItle"
+TItle_2.Parent = VSV1
+TItle_2.BackgroundColor3 = Color3.new(0.231373, 0.231373, 0.231373)
+TItle_2.BorderSizePixel = 0
+TItle_2.Position = UDim2.new(-3.83744082e-05, 0, 0.0778456926, 0)
+TItle_2.Size = UDim2.new(0, 369, 0, 10)
+TItle_2.Font = Enum.Font.SourceSansLight
+TItle_2.Text = ""
+TItle_2.TextColor3 = Color3.new(1, 1, 1)
+TItle_2.TextSize = 25
+
+Speed.Name = "Speed"
+Speed.Parent = VSV1
+Speed.BackgroundColor3 = Color3.new(0.243137, 0.243137, 0.243137)
+Speed.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+Speed.BorderSizePixel = 3
+Speed.Position = UDim2.new(0.0415850431, 0, 0.11448466, 0)
+Speed.Size = UDim2.new(0, 166, 0, 25)
+Speed.Font = Enum.Font.SourceSans
+Speed.Text = "Max Speed"
+Speed.TextColor3 = Color3.new(1, 1, 1)
+Speed.TextSize = 25
+
+SpeedBind.Name = "SpeedBind"
+SpeedBind.Parent = Speed
+SpeedBind.BackgroundColor3 = Color3.new(1, 1, 1)
+SpeedBind.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+SpeedBind.BorderSizePixel = 3
+SpeedBind.Position = UDim2.new(1.0793581, 0, -0.00314961374, 0)
+SpeedBind.Size = UDim2.new(0, 155, 0, 25)
+SpeedBind.Font = Enum.Font.SourceSans
+SpeedBind.PlaceholderText = "Amount"
+SpeedBind.Text = ""
+SpeedBind.TextColor3 = Color3.new(0, 0, 0)
+SpeedBind.TextSize = 25
+
+Close.Name = "Close"
+Close.Parent = VSV1
+Close.BackgroundColor3 = Color3.new(1, 1, 1)
+Close.BackgroundTransparency = 1
+Close.BorderSizePixel = 0
+Close.Position = UDim2.new(0.91011405, 0, 0, 0)
+Close.Size = UDim2.new(0, 33, 0, 30)
+Close.Font = Enum.Font.SourceSansLight
+Close.Text = "X"
+Close.TextColor3 = Color3.new(1, 1, 1)
+Close.TextSize = 30
+Close.TextWrapped = true
+
+NitroSpeed.Name = "NitroSpeed"
+NitroSpeed.Parent = VSV1
+NitroSpeed.BackgroundColor3 = Color3.new(0.243137, 0.243137, 0.243137)
+NitroSpeed.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+NitroSpeed.BorderSizePixel = 3
+NitroSpeed.Position = UDim2.new(0.0415850431, 0, 0.280174315, 0)
+NitroSpeed.Size = UDim2.new(0, 166, 0, 25)
+NitroSpeed.Font = Enum.Font.SourceSans
+NitroSpeed.Text = "Nitro Max Speed"
+NitroSpeed.TextColor3 = Color3.new(1, 1, 1)
+NitroSpeed.TextSize = 25
+
+NST.Name = "NST"
+NST.Parent = NitroSpeed
+NST.BackgroundColor3 = Color3.new(1, 1, 1)
+NST.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+NST.BorderSizePixel = 3
+NST.Position = UDim2.new(1.0793581, 0, -0.00629922748, 0)
+NST.Size = UDim2.new(0, 155, 0, 25)
+NST.Font = Enum.Font.SourceSans
+NST.PlaceholderText = "Amount"
+NST.Text = ""
+NST.TextColor3 = Color3.new(0, 0, 0)
+NST.TextSize = 25
+
+NitroForce.Name = "NitroForce"
+NitroForce.Parent = VSV1
+NitroForce.BackgroundColor3 = Color3.new(0.243137, 0.243137, 0.243137)
+NitroForce.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+NitroForce.BorderSizePixel = 3
+NitroForce.Position = UDim2.new(0.0415850468, 0, 0.362042129, 0)
+NitroForce.Size = UDim2.new(0, 166, 0, 25)
+NitroForce.Font = Enum.Font.SourceSans
+NitroForce.Text = "Nitro Force"
+NitroForce.TextColor3 = Color3.new(1, 1, 1)
+NitroForce.TextSize = 25
+
+NFT.Name = "NFT"
+NFT.Parent = NitroForce
+NFT.BackgroundColor3 = Color3.new(1, 1, 1)
+NFT.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+NFT.BorderSizePixel = 3
+NFT.Position = UDim2.new(1.07935798, 0, 0, 0)
+NFT.Size = UDim2.new(0, 155, 0, 25)
+NFT.Font = Enum.Font.SourceSans
+NFT.PlaceholderText = "Amount"
+NFT.Text = ""
+NFT.TextColor3 = Color3.new(0, 0, 0)
+NFT.TextSize = 25
+
+JumpHeight.Name = "JumpHeight"
+JumpHeight.Parent = VSV1
+JumpHeight.BackgroundColor3 = Color3.new(0.243137, 0.243137, 0.243137)
+JumpHeight.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+JumpHeight.BorderSizePixel = 3
+JumpHeight.Position = UDim2.new(0.0419999994, 0, 0.443515956, 0)
+JumpHeight.Size = UDim2.new(0, 166, 0, 25)
+JumpHeight.Font = Enum.Font.SourceSans
+JumpHeight.Text = "Jump Height"
+JumpHeight.TextColor3 = Color3.new(1, 1, 1)
+JumpHeight.TextSize = 25
+
+JHT.Name = "JHT"
+JHT.Parent = JumpHeight
+JHT.BackgroundColor3 = Color3.new(1, 1, 1)
+JHT.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+JHT.BorderSizePixel = 3
+JHT.Position = UDim2.new(1.0793581, 0, -0.00629922748, 0)
+JHT.Size = UDim2.new(0, 155, 0, 25)
+JHT.Font = Enum.Font.SourceSans
+JHT.PlaceholderText = "Amount"
+JHT.Text = ""
+JHT.TextColor3 = Color3.new(0, 0, 0)
+JHT.TextSize = 25
+
+ScrollingFrame.Parent = VSV1
+ScrollingFrame.BackgroundColor3 = Color3.new(1, 1, 1)
+ScrollingFrame.BackgroundTransparency = 1
+ScrollingFrame.Position = UDim2.new(0, 0, 0.601494849, 0)
+ScrollingFrame.Size = UDim2.new(0, 369, 0, 156)
+ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0.469999999, 0)
+
+TptoCrate.Name = "TptoCrate"
+TptoCrate.Parent = ScrollingFrame
+TptoCrate.BackgroundColor3 = Color3.new(0.243137, 0.243137, 0.243137)
+TptoCrate.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+TptoCrate.BorderSizePixel = 3
+TptoCrate.Position = UDim2.new(0.490514904, 0, 0.270000011, 0)
+TptoCrate.Size = UDim2.new(0, 167, 0, 41)
+TptoCrate.Font = Enum.Font.SourceSans
+TptoCrate.Text = "TP to Crates"
+TptoCrate.TextColor3 = Color3.new(1, 1, 1)
+TptoCrate.TextSize = 20
+
+TeleportLT.Name = "TeleportLT"
+TeleportLT.Parent = ScrollingFrame
+TeleportLT.BackgroundColor3 = Color3.new(0.243137, 0.243137, 0.243137)
+TeleportLT.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+TeleportLT.BorderSizePixel = 3
+TeleportLT.Position = UDim2.new(0.490514934, 0, 0.0104986876, 0)
+TeleportLT.Size = UDim2.new(0, 167, 0, 41)
+TeleportLT.Font = Enum.Font.SourceSans
+TeleportLT.Text = "Teleport to Long Tunnel"
+TeleportLT.TextColor3 = Color3.new(1, 1, 1)
+TeleportLT.TextSize = 20
+
+TeleportToCar.Name = "TeleportToCar"
+TeleportToCar.Parent = ScrollingFrame
+TeleportToCar.BackgroundColor3 = Color3.new(0.243137, 0.243137, 0.243137)
+TeleportToCar.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+TeleportToCar.BorderSizePixel = 3
+TeleportToCar.Position = UDim2.new(0.0189701896, 0, 0.0104986876, 0)
+TeleportToCar.Size = UDim2.new(0, 167, 0, 41)
+TeleportToCar.Font = Enum.Font.SourceSans
+TeleportToCar.Text = "Teleport To Car"
+TeleportToCar.TextColor3 = Color3.new(1, 1, 1)
+TeleportToCar.TextSize = 20
+
+CrateESP.Name = "CrateESP"
+CrateESP.Parent = ScrollingFrame
+CrateESP.BackgroundColor3 = Color3.new(0.243137, 0.243137, 0.243137)
+CrateESP.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+CrateESP.BorderSizePixel = 3
+CrateESP.Position = UDim2.new(0.0162601657, 0, 0.270000011, 0)
+CrateESP.Size = UDim2.new(0, 167, 0, 41)
+CrateESP.Font = Enum.Font.SourceSans
+CrateESP.Text = "Crate ESP"
+CrateESP.TextColor3 = Color3.new(1, 1, 1)
+CrateESP.TextSize = 20
+
+GiveAllPerks.Name = "GiveAllPerks"
+GiveAllPerks.Parent = ScrollingFrame
+GiveAllPerks.BackgroundColor3 = Color3.new(0.243137, 0.243137, 0.243137)
+GiveAllPerks.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+GiveAllPerks.BorderSizePixel = 3
+GiveAllPerks.Position = UDim2.new(0.0189701933, 0, 0.519999981, 0)
+GiveAllPerks.Size = UDim2.new(0, 167, 0, 41)
+GiveAllPerks.Font = Enum.Font.SourceSans
+GiveAllPerks.Text = "Give All Perks"
+GiveAllPerks.TextColor3 = Color3.new(1, 1, 1)
+GiveAllPerks.TextSize = 20
+
+SuperCar.Name = "SuperCar"
+SuperCar.Parent = ScrollingFrame
+SuperCar.BackgroundColor3 = Color3.new(0.243137, 0.243137, 0.243137)
+SuperCar.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+SuperCar.BorderSizePixel = 3
+SuperCar.Position = UDim2.new(0.493224919, 0, 0.519999981, 0)
+SuperCar.Size = UDim2.new(0, 167, 0, 41)
+SuperCar.Font = Enum.Font.SourceSans
+SuperCar.Text = "Give Super Speed"
+SuperCar.TextColor3 = Color3.new(1, 1, 1)
+SuperCar.TextSize = 20
+
+InfiniteNitro.Name = "InfiniteNitro"
+InfiniteNitro.Parent = ScrollingFrame
+InfiniteNitro.BackgroundColor3 = Color3.new(0.243137, 0.243137, 0.243137)
+InfiniteNitro.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+InfiniteNitro.BorderSizePixel = 3
+InfiniteNitro.Position = UDim2.new(0.490514904, 0, 0.769999981, 0)
+InfiniteNitro.Size = UDim2.new(0, 167, 0, 41)
+InfiniteNitro.Font = Enum.Font.SourceSans
+InfiniteNitro.Text = "Infinite Nitro"
+InfiniteNitro.TextColor3 = Color3.new(1, 1, 1)
+InfiniteNitro.TextSize = 20
+
+AutoFarm.Name = "AutoFarm"
+AutoFarm.Parent = ScrollingFrame
+AutoFarm.BackgroundColor3 = Color3.new(0.243137, 0.243137, 0.243137)
+AutoFarm.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+AutoFarm.BorderSizePixel = 3
+AutoFarm.Position = UDim2.new(0.0162601657, 0, 0.769999981, 0)
+AutoFarm.Size = UDim2.new(0, 167, 0, 41)
+AutoFarm.Font = Enum.Font.SourceSans
+AutoFarm.Text = "Auto Farm"
+AutoFarm.TextColor3 = Color3.new(1, 1, 1)
+AutoFarm.TextSize = 20
+
+Torque.Name = "Torque"
+Torque.Parent = VSV1
+Torque.BackgroundColor3 = Color3.new(0.243137, 0.243137, 0.243137)
+Torque.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+Torque.BorderSizePixel = 3
+Torque.Position = UDim2.new(0.0399999991, 0, 0.197285011, 0)
+Torque.Size = UDim2.new(0, 166, 0, 25)
+Torque.Font = Enum.Font.SourceSans
+Torque.Text = "Torque"
+Torque.TextColor3 = Color3.new(1, 1, 1)
+Torque.TextSize = 25
+
+Torquet.Name = "Torquet"
+Torquet.Parent = Torque
+Torquet.BackgroundColor3 = Color3.new(1, 1, 1)
+Torquet.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+Torquet.BorderSizePixel = 3
+Torquet.Position = UDim2.new(1.079, 0, -0.030026257, 0)
+Torquet.Size = UDim2.new(0, 155, 0, 25)
+Torquet.Font = Enum.Font.SourceSans
+Torquet.PlaceholderText = "Amount"
+Torquet.Text = ""
+Torquet.TextColor3 = Color3.new(0, 0, 0)
+Torquet.TextSize = 25
+
+SteeringForce.Name = "SteeringForce"
+SteeringForce.Parent = VSV1
+SteeringForce.BackgroundColor3 = Color3.new(0.243137, 0.243137, 0.243137)
+SteeringForce.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+SteeringForce.BorderSizePixel = 3
+SteeringForce.Position = UDim2.new(0.0419999994, 0, 0.524596989, 0)
+SteeringForce.Size = UDim2.new(0, 166, 0, 25)
+SteeringForce.Font = Enum.Font.SourceSans
+SteeringForce.Text = "Steering Force"
+SteeringForce.TextColor3 = Color3.new(1, 1, 1)
+SteeringForce.TextSize = 25
+
+SFT.Name = "SFT"
+SFT.Parent = SteeringForce
+SFT.BackgroundColor3 = Color3.new(1, 1, 1)
+SFT.BorderColor3 = Color3.new(0.207843, 0.207843, 0.207843)
+SFT.BorderSizePixel = 3
+SFT.Position = UDim2.new(1.0793581, 0, -0.00629922748, 0)
+SFT.Size = UDim2.new(0, 155, 0, 25)
+SFT.Font = Enum.Font.SourceSans
+SFT.PlaceholderText = "Amount"
+SFT.Text = ""
+SFT.TextColor3 = Color3.new(0, 0, 0)
+SFT.TextSize = 25
+
+Open.Name = "Open"
+Open.Parent = VehicleSimultor
+Open.BackgroundColor3 = Color3.new(0, 0, 0)
+Open.BackgroundTransparency = 0.5
+Open.BorderSizePixel = 0
+Open.Position = UDim2.new(0.5, 0, 0, 0)
+Open.Size = UDim2.new(0, 110, 0, 39)
+Open.Font = Enum.Font.SourceSans
+Open.Text = "Open"
+Open.TextColor3 = Color3.new(1, 1, 1)
+Open.TextScaled = true
+Open.TextSize = 14
+Open.TextWrapped = true
+Open.Visible = false
+-- Scripts:
+Open.MouseButton1Click:connect(function()
+   VSV1.Visible = true
+   Open.Visible = false
+end)
+
+Close.MouseButton1Click:connect(function()
+   VSV1.Visible = false
+   Open.Visible = true
+end)
+
+SteeringForce.MouseButton1Click.connect(function()
+findCar()
+myCar.Handling.SteeringRadiusConstant.Value = SFT.Text
+end)
+
+function findCar()
+local vehicle = workspace.Vehicles:getChildren()
+for i=1,#vehicle do
+if vehicle[i]:findFirstChild("owner") then
+if vehicle[i].owner.Value == game.Players.LocalPlayer.Name then
+myCar = vehicle[i]
+end
+end
+end
+end
+
+
+SuperCar.MouseButton1Down:connect(function()
+findCar()
+myCar.Handling.MaxSpeed.Value = 10000
+myCar.Handling.Torque.Value = 40000
+myCar.Handling.SteeringRadiusConstant.Value = 15000
+myCar.Handling.FrictionRoad.Value = 250
+myCar.Handling.Nitro.NitroSpeed.Value = 500
+myCar.Handling.Nitro.NitroForce.Value = 5000
+myCar.Handling.TurboJump.TurboJumpHeight.Value = 250
+end)
+
+Speed.MouseButton1Down:connect(function()
+findCar()
+myCar.Handling.MaxSpeed.Value = SpeedBind.Text
+myCar.Handling.SteeringRadiusConstant.Value = 1500000
+end)
+
+Torque.MouseButton1Down:connect(function()
+findCar()
+myCar.Handling.Torque.Value = Torquet.Text
+end)
+
+NitroSpeed.MouseButton1Down:connect(function()
+findCar()
+myCar.Handling.Nitro.NitroSpeed.Value = NST.Text
+end)
+
+NitroForce.MouseButton1Down:connect(function()
+findCar()
+myCar.Handling.Nitro.NitroForce.Value = NFT.Text
+end)
+
+JumpHeight.MouseButton1Down:connect(function()
+findCar()
+myCar.Handling.TurboJump.TurboJumpHeight.Value = JHT.Text
+end)
+
+GiveAllPerks.MouseButton1Down:connect(function()
+game:GetService("Players").LocalPlayer.UserId = 1099580
+end)
+
+CrateESP.MouseButton1Down:connect(function()
+   local crates = workspace:getChildren()
+for i=1,#crates do
+if crates[i].ClassName == "Model" then
+local crates2 = crates[i]:getChildren()
+for i=1,#crates2 do
+if crates2[i].ClassName == "Model" then
+local crates3 = crates2[i]:getChildren()
+for i=1,#crates3 do
+if crates3[i].ClassName == "MeshPart" then
+if crates3[i]:findFirstChild("Smoke") then
+if crates3[i]:findFirstChild("BoxHandleAdornment") then
+   crates3[i]:findFirstChild("BoxHandleAdornment"):Remove()
+else
+local a = Instance.new("BoxHandleAdornment",crates3[i])
+a.Size = Vector3.new(10,500,6)
+a.SizeRelativeOffset = Vector3.new(0,135,0)
+a.Color3 = Color3.fromRGB(0,255,0)
+a.Transparency = 0.5
+a.AlwaysOnTop = true
+a.Adornee = crates3[i]
+a.ZIndex = 1
+local b = Instance.new("BoxHandleAdornment",crates3[i])
+b.Size = Vector3.new(10,4,6)
+b.Color3 = Color3.fromRGB(0,0,255)
+b.Transparency = 0.3
+b.AlwaysOnTop = true
+b.Adornee = crates3[i]
+b.ZIndex = 1
+end
+end
+end
+end
+end
+end
+end
+end
+end)
+
+TptoCrate.MouseButton1Down:connect(function()
+   local crates = workspace:getChildren()
+for i=1,#crates do
+if crates[i].ClassName == "Model" then
+local crates2 = crates[i]:getChildren()
+for i=1,#crates2 do
+if crates2[i].ClassName == "Model" then
+local crates3 = crates2[i]:getChildren()
+for i=1,#crates3 do
+if crates3[i].ClassName == "MeshPart" then
+if crates3[i]:findFirstChild("Smoke") then
+game.Players.LocalPlayer.Character:MoveTo(Vector3.new(crates3[i].Position.X+30,crates3[i].Position.Y+5,crates3[i].Position.Z))
+wait()
+game.Players.LocalPlayer.Character.Humanoid:MoveTo(Vector3.new(crates3[i].Position.X,crates3[i].Position.Y,crates3[i].Position.Z))
+wait(4)
+end
+end
+end
+end
+end
+end
+end
+end)
+
+TeleportToCar.MouseButton1Down:connect(function()
+   findCar()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(myCar.Chassis.VehicleSeat.Position+myCar.Chassis.VehicleSeat.SeatOffset.Value)
+end)
+
+TeleportLT.MouseButton1Down:connect(function()
+   findCar()
+myCar:MoveTo(Vector3.new(-2180,45,-3650)) 
+end)
+
+InfiniteNitro.MouseButton1Down:connect(function()
+veh = nil
+for i,v in pairs(game.Workspace.Vehicles:GetChildren()) do
+if v:IsA("Model") then
+if v.owner.Value == game.Players.LocalPlayer.Name then
+veh = v
+end
+end
+end
+han = veh.Handling
+
+while han ~= nil do
+wait(0.5)
+han.Nitro.NitroAmount.Value = 250
+end
+end)
+
+AutoFarm.MouseButton1Down:connect(function()
+--[[
+Fully automatic money/miles farm
+TODO:
+Add auto respawn vehicle
+]]
+local waitTime = 1 --This will be the time it takes (seconds) until your car resets. See line 37
+--Do not change anything below :)
+local hint = Instance.new('Hint', Workspace) hint.Text = "Vehicle Simulator Autofarm loading..."
+local found = false
+local go = true
+
+function findVehicle() --Finds your vehicle
+  while not found do --Loops until your vehicle has been found
+      local vehicles = Workspace.Vehicles:getChildren()
+      for i=1,#vehicles do
+          if vehicles[i]:findFirstChild'owner' then
+              if vehicles[i].owner.Value == game:GetService'Players'.LocalPlayer.Name then -- Found your vehicle
+                  found = true --Setting found to true so loop breaks
+                  vehicle = vehicles[i] -- Declares vehicle variable to your vehicle
+                  vehStats = vehicle.Handling -- Declares vehStats variable to vehicle stats folder
+                  vehStats.MaxSpeed.Value = 700
+                  vehStats.Torque.Value = 20000
+                  vehStats.SteeringRadiusConstant.Value = 120000000
+              elseif vehicles[i + 1] == nil and not found then
+                  --Autorespawn would go here
+                  hint.Text = "Please spawn and enter your vehicle!" --Your vehicle does not exist in the Workspace
+              end
+          end
+      end
+      wait(1) --Waiting before checking again so we don't crash
+  end
+  wait(2) --We've found the car. Waiting so the car can be properly placed on the highway
+  vehicle.PrimaryPart = vehicle.Chassis.VehicleSeat
+end
+
+function farm() --This is where the magic happens :)
+  hint.Text = "Finished loading! Autofarm initialized."
+  while wait(waitTime) do --Waits x seconds before resetting car
+      vehicle:SetPrimaryPartCFrame(CFrame.new(-2470,60,777)) --Teleports vehicle to highway
+      game:GetService'VirtualUser':SetKeyUp("w") --Resets W key
+      game:GetService'VirtualUser':SetKeyDown("w") --Presses W key to go forward
+  end
+end
+findVehicle() --Calls the findVehicle function
+while go do
+  if not pcall(farm()) then --Calls farm function & checks for errors
+      found = false  --If it errors, it sets found to false and continues looking for your vehicle.
+      findVehicle() 
+  end
+end
+end)
