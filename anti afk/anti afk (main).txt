@@ -1,4 +1,4 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/juywvm/-Roblox-Projects-/main/actually_anti_afk", true))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/xyz177/roblox-scripts/refs/heads/main/anti%20afk/actually%20anti%20afk.txt", true))()
 --[[
 
 yes. i fucking obfuscated a anti afk script. What do you gonna do about it huh?
